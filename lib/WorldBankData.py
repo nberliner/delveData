@@ -281,7 +281,7 @@ class WorldBankData(object):
         dataTmp.columns = ["Country Code", "Year", dataFrame["Indicator Code"][0]]
         return(dataTmp)
 
-    def indicator(self, country, name):
+    def indicator(self, countryList, name):
         """
         Return the values of an indicator for a given country.
         
@@ -291,18 +291,41 @@ class WorldBankData(object):
         values of the indicator.
         
         Input:
-          country (str): The country name. Either three letter code or full name
+          country (list): The country names. Can be list containing multiple
+                          countries (either three letter code or full name) or
+                          single string.
           
-          name (str):    World Bank Indicator
-        """
-        # Check the country code
-        if not self.countryMapper(country): # Country code is not understood.
-            return                          # Message will be printed to screen
-                
-        if len(country) != 3:
-            country = self.countryMapper(country) # Map to three letter code
+          name (str):     World Bank Indicator
         
-        # Check the World Bank Indicator
+        Output:
+          x (list):       List of pandas Series objects containing the year values
+          
+          y (list):       List of pandas Series objects containing the indicator values 
+          
+          c (list):       List of country names (three letter code). The order
+                          is matching the order of the x and y values.
+                          
+        """
+        ## Check the country code
+        if not isinstance(countryList, list):  # Put it in a list
+            countryList = [countryList, ]
+        
+        # Check each entry if it is understood
+        tmp = list()
+        for c in countryList:
+            if not self.countryMapper(c):                     # Country code is not understood.
+                print("Country %s not understood. Ignoring.") # Message will be printed to screen
+            else:
+                if len(c) != 3:
+                    c = self.countryMapper(c) # Map to three letter code
+                tmp.append(c)
+        countryList = tmp
+        
+        if len(countryList) == 0:
+            print("Unfortunatly no country was understood. Nothing to do.")
+            return
+
+        ## Check the World Bank Indicator
         if not self.WorldBankMapper(name): # World Bank Indicator not understood
             return                         # Message will be printed to screen
         
@@ -310,14 +333,18 @@ class WorldBankData(object):
                            # will do.
             name = self.WorldBankMapper(name) # Map to indicator code
         
-        try:
-            x = self.data["Year"][ self.data["Country Code"] == country ]
-            y = self.data[name][   self.data["Country Code"] == country ]
-        except:
-            x = np.asarray([])
-            y = np.asarray([])
+        x, y, c = list(), list(), list()
+        for country in countryList:
+            try:
+                x.append(self.data["Year"][ self.data["Country Code"] == country ])
+                y.append(self.data[name][   self.data["Country Code"] == country ])
+                c.append(country)
+            except:
+                x.append(np.asarray([]))
+                y.append(np.asarray([]))
+                c.append(country)
 
-        return x, y
+        return x, y, c
 
 
 

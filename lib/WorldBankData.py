@@ -26,8 +26,10 @@ import os
 import zipfile
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from countryCodeMapper import countryCodeMapper
+from utils import Settings
 
 class DoubleDict(dict):
     """
@@ -41,6 +43,7 @@ class DoubleDict(dict):
     def __setitem__(self, key, val):
         dict.__setitem__(self, key, val)
         dict.__setitem__(self, val, key)
+
 
 class WorldBankIndicatorMapper(object):
     
@@ -226,9 +229,10 @@ class WorldBankIndicatorMapper(object):
             return self.fnameMapper[indicator.upper()]
 
 
-class WorldBankData(object):
+class WorldBankData(Settings):
     
     def __init__(self, folder):
+        super(WorldBankData, self).__init__()
         
         self.folder          = folder
         self.data            = None
@@ -251,7 +255,7 @@ class WorldBankData(object):
                 continue
             
             assert( zipfile.is_zipfile(fname) ) # sanity check
-            print("Adding indicator\t%s" %self.WorldBankMapper(indicator) )
+#            print("Adding indicator\t%s" %self.WorldBankMapper(indicator) )
             
             # Open the zipfile and load the data
             with zipfile.ZipFile(fname, "r") as f:
@@ -347,9 +351,84 @@ class WorldBankData(object):
         return x, y, c
 
 
+    def show(self, countryList, name, normalise_by=None, in_percent=True):
+        """
+        Plot the values of an indicator for a given country.
+        
+        Country can be either the three letter country code or the full country
+        name. The indicator name can either be the full description or the code 
+        used in the World Bank data. It returns the years and the corresponding
+        values of the indicator.
+        The data can be normalised by the an indicator specified in the
+        normalise_by variable. If in_percent is True, the indicator is taken
+        to be in percent of the normalise_by indicator. Instead percent values,
+        the true value will be shown.
+        
+        Input:
+          country (list):      The country names. Can be list containing multiple
+                               countries (either three letter code or full name) or
+                               single string.
+          
+          name (str):          World Bank Indicator
+          
+          normalise_by (str):  World Bank Indicator by which the data should
+                               be normalised.
+        
+          in_percent (bool):   If True, the indicator will be treated as being
+                               in percent of the normalise_by column.
+        
+        Output:
+          x (list):       List of pandas Series objects containing the year values
+          
+          y (list):       List of pandas Series objects containing the indicator values 
+          
+          c (list):       List of country names (three letter code). The order
+                          is matching the order of the x and y values.
+                          
+        """
+        # Get the data
+        X, Y, C = self.indicator(countryList, name)
+        
+        # Get the normalisation indicator
+        if normalise_by is not None:
+            X_norm, Y_norm, C_norm = self.indicator(countryList, normalise_by)
+            assert( np.all([ c==c_norm for c,c_norm in zip(C, C_norm) ]) ) # sanity check
+            assert( np.all([ x==x_norm for x,x_norm in zip(X, X_norm) ]) )
+            if in_percent:
+                Y = [ y*y_norm for y,y_norm in zip(Y,Y_norm) ]
+            else:
+                Y = [ y/y_norm for y,y_norm in zip(Y,Y_norm) ]
+                
 
+        # Was the input understood?
+        if len(X) == 0:
+            print("Nothing to plot")
+            return
+        
+        # Assemble the figure title
+        if name[2] == '.': # This is a pretty ugly comparison.. but hopefully
+                           # will do.
+            name = self.WorldBankMapper(name) # Map to indicator code
+        
+        if normalise_by is not None:
+            if normalise_by[2] == '.':
+                normalise_by = self.WorldBankMapper(normalise_by) # Map to indicator code
+            if in_percent:
+                name = name + " [conv. to real unit]"
+            else:
+                name = name + " [normalised by %s]" %normalise_by
 
+        # Plot the figure            
+        fig = plt.figure(figsize=self.singleFigureSize, dpi=self.dpi)
+        ax  = fig.add_subplot(111)
+        ax.set_title(name)
+        ax.set_xlabel("Year", fontsize=self.axisLabelSize)
+        ax.set_ylabel("Indicator", fontsize=self.axisLabelSize)
 
+        for x, y, c in zip(X,Y,C):
+            ax.plot(x,y)
+        
+        return
 
 
 

@@ -421,7 +421,7 @@ class WorldBankData(Settings):
         # Generate the figure            
         fig = plt.figure(figsize=self.singleFigureSize, dpi=self.dpi)
         ax  = fig.add_subplot(111)
-        ax.set_title(name)
+        ax.set_title(name, y=1.04)
         ax.set_xlabel("Year", fontsize=self.axisLabelSize)
         ax.set_ylabel("Indicator", fontsize=self.axisLabelSize)
         ax.set_xlim( [int(min(X[0]))-1, int(max(X[0]))+1] )

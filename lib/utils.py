@@ -126,3 +126,5 @@ class Settings(object):
         self.singleFigureSize = (10,8)
         self.dpi              = 120
         self.axisLabelSize    = 16
+        self.colors           = ['blue', 'green', 'red', 'cyan', 'magenta', \
+                                 'black', ]

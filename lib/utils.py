@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 """
+import matplotlib as mpl
 from operator import itemgetter
 from pandas   import DataFrame
 
@@ -110,4 +111,18 @@ class Country(object):
         
         return self.countryCount
         
+
+class Settings(object):
+    """ Container for commonly used settings """
+    
+    def __init__(self):
+
+        # Thanks to: http://stackoverflow.com/a/3900167        
+        font = {'family' : 'serif',
+                'size'   : 14}
+
+        mpl.rc('font', **font)
         
+        self.singleFigureSize = (10,8)
+        self.dpi              = 120
+        self.axisLabelSize    = 16

@@ -426,7 +426,12 @@ class WorldBankData(Settings):
         ax.set_ylabel("Indicator", fontsize=self.axisLabelSize)
 
         for x, y, c in zip(X,Y,C):
-            ax.plot(x,y)
+            ax.plot(x,y, label=c)
+        
+        # Add the legend
+        handles, labels = ax.get_legend_handles_labels()
+        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+        plt.show()
         
         return
 

@@ -418,20 +418,22 @@ class WorldBankData(Settings):
             else:
                 name = name + " [normalised by %s]" %normalise_by
 
-        # Plot the figure            
+        # Generate the figure            
         fig = plt.figure(figsize=self.singleFigureSize, dpi=self.dpi)
         ax  = fig.add_subplot(111)
         ax.set_title(name)
         ax.set_xlabel("Year", fontsize=self.axisLabelSize)
         ax.set_ylabel("Indicator", fontsize=self.axisLabelSize)
+        ax.set_xlim( [int(min(X[0]))-1, int(max(X[0]))+1] )
 
-        for x, y, c in zip(X,Y,C):
+        for idx, (x, y, c) in enumerate(zip(X,Y,C)):
+            # If there are missing values we do not want to plot it continuesly
+            # but indicate the regions with the missing values.
             ax.plot(x,y, label=c)
         
         # Add the legend
         handles, labels = ax.get_legend_handles_labels()
-        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-        plt.show()
+        ax.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         
         return
 

@@ -429,17 +429,44 @@ class WorldBankData(Settings):
         for idx, (x, y, c) in enumerate(zip(X,Y,C)):
             # If there are missing values we do not want to plot it continuesly
             # but indicate the regions with the missing values.
-            ax.plot(x,y, label=c)
+            
+                X_subset, Y_subset = self._subset(x, y)
+                for plotLegend, (x_subset, y_subset) in enumerate(zip(X_subset, Y_subset)):
+                    if np.any(pd.isnull(Y_subset)):
+                        x_subset = x_subset[ pd.notnull(y_subset) ]
+                        y_subset = y_subset.dropna()
+                        ax.plot(x_subset.dropna(), y_subset.dropna(), label=c, color=self.colors[idx], linestyle="dashed", marker="o")
+                    else:
+                        ax.plot(x_subset, y_subset, label=c, color=self.colors[idx])
         
-        # Add the legend
-        handles, labels = ax.get_legend_handles_labels()
-        ax.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+        # Add the legend, remove duplicates. Since the plot is compsed piecewise,
+        # there will be multiple instances of each line for the legend.
+        _handles, _labels = ax.get_legend_handles_labels()
+        labels  = list(set(_labels))
+        handles = [ _handles[_labels.index(item)] for item in labels ]
+        
+        ax.legend(handles, labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
         
         return
 
 
+    def _subset(self, x, y):
+        
+        X_subset, Y_subset = list(), list()
 
-
-
+        idx = np.where( pd.notnull(y) )[0] # get the indexes with values
+                                                 # we are only interested in the
+                                                 # first dimension
+        for i in range(1,len(idx)):
+            chunksY = y[ idx[i-1]:idx[i]+1 ] # These are the chunks of data
+                                             # that can be used to plot the data
+                                             # using lines or dots depending
+                                             # on NA values.
+            chunksX = x[ idx[i-1]:idx[i]+1 ]
+            
+            X_subset.append( chunksX )
+            Y_subset.append( chunksY )
+        
+        return X_subset, Y_subset
 
 

@@ -26,7 +26,7 @@ import matplotlib as mpl
 from operator import itemgetter
 from pandas   import DataFrame
 
-from countryCodeMapper import countryCodeMapper
+from countryCodeMapper import CountryCodeMapper
 
 
 class CountryContainer(object):
@@ -66,7 +66,7 @@ class Country(object):
     
     def __init__(self, year=None):
         
-        self.mapper       = countryCodeMapper()
+        self.mapper       = CountryCodeMapper()
         self.countryCount = dict()
         self.counter      = dict()
         self.block        = False

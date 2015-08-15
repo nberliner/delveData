@@ -33,7 +33,7 @@ import os
 import pickle
 from time import sleep
 
-from countryCodeMapper import countryCodeMapper
+from countryCodeMapper import CountryCodeMapper
 from utils             import Country, CountryContainer
 
 from nytimesarticles   import articleAPI, DeveloperOverRate
@@ -46,7 +46,7 @@ tmpFolder = "/home/niklas/tmp/nyt_scrape/"
 done = [ int(fname[8:-2]) for fname in os.listdir(tmpFolder) if fname != "country_aggregate.p" ]
 
 # Initialise some variables
-C = countryCodeMapper()
+C = CountryCodeMapper()
 countries = C.countryNames()
 container = CountryContainer()
 

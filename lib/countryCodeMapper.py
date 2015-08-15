@@ -24,7 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 """
 
 
-class countryCodeMapper(object):
+class CountryCodeMapper(object):
     
     def __init__(self):
 
@@ -104,6 +104,7 @@ class countryCodeMapper(object):
                                 "Bermudas":"BMU"                    ,\
                               "BOL":"BOL"                           ,\
                                 "Bolivia":"BOL"                     ,\
+                                "Bolivia (Plurinational State of)":"BOL" ,\
                                 "Bolivian":"BOL"                    ,\
                               "BRA":"BRA"                           ,\
                                 "Brazil":"BRA"                      ,\
@@ -124,6 +125,7 @@ class countryCodeMapper(object):
                                 "Tswana":"BWA"                      ,\
                               "CAF":"CAF"                           ,\
                                 "Central African Republic":"CAF"    ,\
+                                "Central African Rep.":"CAF"        ,\
                               "CAN":"CAN"                           ,\
                                 "Canada":"CAN"                      ,\
                                 "Canadian":"CAN"                    ,\
@@ -148,6 +150,7 @@ class countryCodeMapper(object):
                                 "Cameroonian":"CMR"                 ,\
                               "COG":"COG"                           ,\
                                 "Congo":"COG"                       ,\
+                                "Dem. Rep. of the Congo":"COG"      ,\
                                 "Congolese":"COG"                   ,\
                               "COL":"COL"                           ,\
                                 "Colombia":"COL"                    ,\
@@ -173,6 +176,7 @@ class countryCodeMapper(object):
                                 "Cyprus":"CYP"                      ,\
                               "CZE":"CZE"                           ,\
                                 "Czech Republic":"CZE"              ,\
+                                "Czech Rep.":"CZE"                  ,\
                                 "Czech":"CZE"                       ,\
                               "DEU":"DEU"                           ,\
                                 "Germany":"DEU"                     ,\
@@ -181,6 +185,7 @@ class countryCodeMapper(object):
                                 "Djibouti":"DJI"                    ,\
                               "DMA":"DMA"                           ,\
                                 "Dominica":"DMA"                    ,\
+                                "Dominican Rep.":"DMA"              ,\
                               "DNK":"DNK"                           ,\
                                 "Denmark":"DNK"                     ,\
                                 "Dane":"DNK"                        ,\
@@ -223,6 +228,7 @@ class countryCodeMapper(object):
                                 "Faeroe Islands":"FRO"              ,\
                               "FSM":"FSM"                           ,\
                                 "Micronesia":"FSM"                  ,\
+                                "Micronesia (Federated States of)":"FSM",\
                                 "Micronesian":"FSM"                 ,\
                               "GAB":"GAB"                           ,\
                                 "Gabon":"GAB"                       ,\
@@ -267,6 +273,7 @@ class countryCodeMapper(object):
                                 "Guyanese":"GUY"                    ,\
                               "HKG":"HKG"                           ,\
                                 "Hong Kong":"HKG"                   ,\
+                                "China, Hong Kong SAR":"HKG"        ,\
                               "HND":"HND"                           ,\
                                 "Honduras":"HND"                    ,\
                                 "Honduran":"HND"                    ,\
@@ -293,6 +300,7 @@ class countryCodeMapper(object):
                                 "Irishman":"IRL"                    ,\
                               "IRN":"IRN"                           ,\
                                 "Iran":"IRN"                        ,\
+                                "Iran (Islamic Rep. of)":"IRN"      ,\
                                 "Iranian":"IRN"                     ,\
                               "IRQ":"IRQ"                           ,\
                                 "Iraq":"IRQ"                        ,\
@@ -323,6 +331,7 @@ class countryCodeMapper(object):
                                 "Kenyan":"KEN"                      ,\
                               "KGZ":"KGZ"                           ,\
                                 "Kyrgyz Republic":"KGZ"             ,\
+                                "Kyrgyzstan":"KGZ"                  ,\
                               "KHM":"KHM"                           ,\
                                 "Cambodia":"KHM"                    ,\
                                 "Cambodian":"KHM"                   ,\
@@ -330,10 +339,12 @@ class countryCodeMapper(object):
                                 "Kiribati":"KIR"                    ,\
                               "KNA":"KNA"                           ,\
                                 "St. Kitts and Nevis":"KNA"         ,\
+                                "Saint Kitts and Nevis":"KNA"       ,\
                                 "Kitts Nevis":"KNA"                 ,\
                               "KOR":"KOR"                           ,\
                                 "Korea Rep.":"KOR"                  ,\
                                 "Korea Republic":"KOR"              ,\
+                                "Rep. of Korea":"KOR"               ,\
                                 "South Korea":"KOR"                 ,\
                                 "South Korean":"KOR"                ,\
                               "KWT":"KWT"                           ,\
@@ -341,6 +352,7 @@ class countryCodeMapper(object):
                                 "Kuwaiti":"KWT"                     ,\
                               "LAO":"LAO"                           ,\
                                 "Lao PDR":"LAO"                     ,\
+                                "Lao People's Dem. Rep.":"LAO"      ,\
                                 "Laos":"LAO"                        ,\
                                 "Laotian":"LAO"                     ,\
                               "LBN":"LBN"                           ,\
@@ -354,6 +366,7 @@ class countryCodeMapper(object):
                                 "Libyan":"LBY"                      ,\
                               "LCA":"LCA"                           ,\
                                 "St. Lucia":"LCA"                   ,\
+                                "Saint Lucia":"LCA"                 ,\
                                 "Lucia":"LCA"                       ,\
                               "LIE":"LIE"                           ,\
                                 "Liechtenstein":"LIE"               ,\
@@ -376,6 +389,7 @@ class countryCodeMapper(object):
                                 "Latvia":"LVA"                      ,\
                                 "Latvian":"LVA"                     ,\
                               "MAC":"MAC"                           ,\
+                                "China, Macao SAR":"MAC"            ,\
                                 "Macao SAR":"MAC"                   ,\
                                 "Macao":"MAC"                       ,\
                               "MAF":"MAF"                           ,\
@@ -387,6 +401,7 @@ class countryCodeMapper(object):
                                 "Monaco":"MCO"                      ,\
                               "MDA":"MDA"                           ,\
                                 "Moldova":"MDA"                     ,\
+                                "Rep. of Moldova":"MDA"             ,\
                                 "Moldovan":"MDA"                    ,\
                               "MDG":"MDG"                           ,\
                                 "Madagascar":"MDG"                  ,\
@@ -493,6 +508,7 @@ class countryCodeMapper(object):
                                 "Puerto Ricans":"PRI"               ,\
                               "PRK":"PRK"                           ,\
                                 "North Korea":"PRK"                 ,\
+                                "Dem. People's Rep. of Korea":"PRK" ,\
                                 "North Koreans":"PRK"               ,\
                               "PRT":"PRT"                           ,\
                                 "Portugal":"PRT"                    ,\
@@ -574,6 +590,7 @@ class countryCodeMapper(object):
                                 "Seychelles":"SYC"                  ,\
                               "SYR":"SYR"                           ,\
                                 "Syrian Arab Republic":"SYR"        ,\
+                                "Syrian Arab Rep.":"SYR"            ,\
                                 "Syria":"SYR"                       ,\
                                 "Syrian":"SYR"                      ,\
                               "TCA":"TCA"                           ,\
@@ -616,6 +633,7 @@ class countryCodeMapper(object):
                                 "Taiwanese":"TWN"                   ,\
                               "TZA":"TZA"                           ,\
                                 "Tanzania":"TZA"                    ,\
+                                "United Rep. of Tanzania":"TZA"     ,\
                                 "Tanzanian":"TZA"                   ,\
                               "UGA":"UGA"                           ,\
                                 "Uganda":"UGA"                      ,\
@@ -628,6 +646,7 @@ class countryCodeMapper(object):
                                 "Uruguayan":"URY"                   ,\
                               "USA":"USA"                           ,\
                                 "United States":"USA"               ,\
+                                "United States of America":"USA"    ,\
                                 "American":"USA"                    ,\
                                 "US":"USA"                          ,\
                               "UZB":"UZB"                           ,\
@@ -635,15 +654,19 @@ class countryCodeMapper(object):
                                 "Uzbek":"UZB"                       ,\
                               "VCT":"VCT"                           ,\
                                 "St. Vincent and the Grenadines":"VCT"  ,\
+                                "Saint Vincent and the Grenadines":"VCT",\
                                 "Vincent Grenadines":"VCT"          ,\
                               "VEN":"VEN"                           ,\
                                 "Venezuela":"VEN"                   ,\
+                                "Venezuela (Bolivarian Republic of)":"VEN",\
                                 "Venezuelan":"VEN"                  ,\
                               "VIR":"VIR"                           ,\
                                 "Virgin Islands (U.S.)":"VIR"       ,\
+                                "US Virgin Islands":"VIR"           ,\
                                 "Virgin Islands":"VIR"              ,\
                               "VNM":"VNM"                           ,\
                                 "Vietnam":"VNM"                     ,\
+                                "Viet Nam":"VNM"                    ,\
                                 "Vietnamese":"VNM"                  ,\
                               "VUT":"VUT"                           ,\
                                 "Vanuatu":"VUT"                     ,\
@@ -668,7 +691,7 @@ class countryCodeMapper(object):
         try:
             return self.countryMap[s]
         except KeyError:
-            print("Country Code %s not understood." %s)
+#            print("Country Code %s not understood." %s)
             return False
     
     def countryNames(self):

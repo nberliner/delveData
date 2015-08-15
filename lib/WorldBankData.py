@@ -28,7 +28,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from countryCodeMapper import countryCodeMapper
+from countryCodeMapper import CountryCodeMapper
 from utils import Settings
 
 class DoubleDict(dict):
@@ -238,7 +238,7 @@ class WorldBankData(Settings):
         self.data            = None
         self.yearLimit       = 1980 # only data until here is taken
         self.WorldBankMapper = WorldBankIndicatorMapper()
-        self.countryMapper   = countryCodeMapper()
+        self.countryMapper   = CountryCodeMapper()
         
         self._load(folder) # load the data
     

@@ -22,11 +22,53 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 """
+import numpy as np
+import pandas as pd
 import matplotlib as mpl
 from operator import itemgetter
-from pandas   import DataFrame
 
 from countryCodeMapper import CountryCodeMapper
+
+
+
+def splitNA(x, y):
+    """
+    Divide discontinous data, i.e. pandas Series or numpy arrays containing
+    missing values into chunks.
+    
+    The purpose of this is to be able to plot the data including a visual
+    representation of the "gaps". Each returned chunk can be checked for NaN
+    and can thus be identified as "gap" or continues data.
+    
+    Input:
+      x (pd.Series or np.array): The x values of the input data
+      
+      y (pd.Series or np.array): The y values of the input data
+     
+    Output:
+      X_subset (list):  List containing the chunks for x
+      
+      Y_subset (list):  List containing the chunks for y
+    
+    """
+    
+    X_subset, Y_subset = list(), list()
+
+    idx = np.where( pd.notnull(y) )[0] # get the indexes with values
+                                       # we are only interested in the
+                                       # first dimension
+    for i in range(1,len(idx)):
+        chunksY = y[ idx[i-1]:idx[i]+1 ] # These are the chunks of data
+                                         # that can be used to plot the data
+                                         # using lines or dots depending
+                                         # on NA values.
+        chunksX = x[ idx[i-1]:idx[i]+1 ]
+        
+        X_subset.append( chunksX )
+        Y_subset.append( chunksY )
+    
+    return X_subset, Y_subset
+        
 
 
 class CountryContainer(object):
@@ -53,7 +95,7 @@ class CountryContainer(object):
         self.data = sorted(self.data, key=itemgetter(1))
         
         # Construct a dict of the countries and years
-        dataFrame = DataFrame.from_dict( [ country.averageCount() for country, _ in self.data ], )
+        dataFrame = pd.DataFrame.from_dict( [ country.averageCount() for country, _ in self.data ], )
 
         # Save to disk
         dataFrame.to_csv(fname)

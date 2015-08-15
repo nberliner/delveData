@@ -29,7 +29,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from countryCodeMapper import CountryCodeMapper
-from utils import Settings
+from utils import Settings, splitNA
 
 class DoubleDict(dict):
     """
@@ -430,7 +430,7 @@ class WorldBankData(Settings):
             # If there are missing values we do not want to plot it continuesly
             # but indicate the regions with the missing values.
             
-                X_subset, Y_subset = self._subset(x, y)
+                X_subset, Y_subset = splitNA(x, y)
                 for plotLegend, (x_subset, y_subset) in enumerate(zip(X_subset, Y_subset)):
                     if np.any(pd.isnull(Y_subset)):
                         x_subset = x_subset[ pd.notnull(y_subset) ]
@@ -450,23 +450,23 @@ class WorldBankData(Settings):
         return
 
 
-    def _subset(self, x, y):
-        
-        X_subset, Y_subset = list(), list()
-
-        idx = np.where( pd.notnull(y) )[0] # get the indexes with values
-                                                 # we are only interested in the
-                                                 # first dimension
-        for i in range(1,len(idx)):
-            chunksY = y[ idx[i-1]:idx[i]+1 ] # These are the chunks of data
-                                             # that can be used to plot the data
-                                             # using lines or dots depending
-                                             # on NA values.
-            chunksX = x[ idx[i-1]:idx[i]+1 ]
-            
-            X_subset.append( chunksX )
-            Y_subset.append( chunksY )
-        
-        return X_subset, Y_subset
+#    def _subset(self, x, y):
+#        
+#        X_subset, Y_subset = list(), list()
+#
+#        idx = np.where( pd.notnull(y) )[0] # get the indexes with values
+#                                           # we are only interested in the
+#                                           # first dimension
+#        for i in range(1,len(idx)):
+#            chunksY = y[ idx[i-1]:idx[i]+1 ] # These are the chunks of data
+#                                             # that can be used to plot the data
+#                                             # using lines or dots depending
+#                                             # on NA values.
+#            chunksX = x[ idx[i-1]:idx[i]+1 ]
+#            
+#            X_subset.append( chunksX )
+#            Y_subset.append( chunksY )
+#        
+#        return X_subset, Y_subset
 
 

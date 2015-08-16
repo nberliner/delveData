@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 """
-
+import numpy as np
 
 class CountryCodeMapper(object):
     
@@ -688,11 +688,22 @@ class CountryCodeMapper(object):
         """
         Return the three letter country code
         """
+        return(self._convert(s))
+    
+    def _convert(self, s):
         try:
             return self.countryMap[s]
         except KeyError:
 #            print("Country Code %s not understood." %s)
             return False
+    
+    def convert(self, s):
+        """
+        Vectorized version of the __call__ method. Not speed optimised
+        but will work on whole Series objects.
+        """
+        vfunc = np.vectorize(self._convert)
+        return(vfunc(s))
     
     def countryNames(self):
         """ Return the "full" country names and their synonyms. """

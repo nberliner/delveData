@@ -681,7 +681,9 @@ class CountryCodeMapper(object):
                                 "Zambian":"ZMB"                     ,\
                               "ZWE":"ZWE"                           ,\
                                 "Zimbabwe":"ZWE"                    ,\
-                                "Zimbabwean":"ZWE"
+                                "Zimbabwean":"ZWE"                  ,\
+                              "VAR":"VAR"                           ,\
+                                "Various/Unknown":"VAR"
                             }
         
     def __call__(self, s):

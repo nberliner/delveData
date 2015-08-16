@@ -102,6 +102,10 @@ class UNHCRdata(Settings):
                                                  # aggregation function used to collapse
                                                  # the rows. We need to drop that
                                                  # See: http://stackoverflow.com/a/22233719
+        
+        # Convert the country columns into the three letter country code
+        data["Country / territory of asylum/residence"] = self.mapper.convert( data["Country / territory of asylum/residence"] )
+        data["Origin"]                                  = self.mapper.convert( data["Origin"] )
         return data
 
 
@@ -116,6 +120,18 @@ class UNHCRdata(Settings):
             return
         elif (destination_country is None or origin_country) is None and year is None:
             print("You must either specify the countries or the year.")
+            return
+        
+        # Convert the country to three letter country code
+        if destination_country is not None and self.mapper(destination_country):
+            destination_country = self.mapper(destination_country)
+        else:
+            print("Destination country not understood.")
+            return
+        if origin_country is not None and self.mapper(origin_country):
+            origin_country = self.mapper(origin_country)
+        else:
+            print("Origin country not understood.")
             return
         
         # Plot the requested type
@@ -156,7 +172,6 @@ class UNHCRdata(Settings):
         y7 = tmpData["Others of concern"]
         y8 = tmpData["Total Population"]
         
-        print('X',x)
         # Create the figure
         fig = plt.figure(figsize=self.singleFigureSize, dpi=self.dpi)
         ax  = fig.add_subplot(111)

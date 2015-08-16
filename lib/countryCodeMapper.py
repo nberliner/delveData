@@ -417,6 +417,7 @@ class CountryCodeMapper(object):
                               "MKD":"MKD"                           ,\
                                 "Macedonia":"MKD"                   ,\
                                 "Macedonian":"MKD"                  ,\
+                                "The former Yugoslav Republic of Macedonia":"MKD",\
                               "MLI":"MLI"                           ,\
                                 "Mali":"MLI"                        ,\
                                 "Malian":"MLI"                      ,\

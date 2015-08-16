@@ -29,7 +29,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from countryCodeMapper import CountryCodeMapper
-from utils import Settings, splitNA
+from utils import Settings, splitNA, plotWithNA
 
 class DoubleDict(dict):
     """
@@ -431,13 +431,7 @@ class WorldBankData(Settings):
             # but indicate the regions with the missing values.
             
                 X_subset, Y_subset = splitNA(x, y)
-                for plotLegend, (x_subset, y_subset) in enumerate(zip(X_subset, Y_subset)):
-                    if np.any(pd.isnull(Y_subset)):
-                        x_subset = x_subset[ pd.notnull(y_subset) ]
-                        y_subset = y_subset.dropna()
-                        ax.plot(x_subset.dropna(), y_subset.dropna(), label=c, color=self.colors[idx], linestyle="dashed", marker="o")
-                    else:
-                        ax.plot(x_subset, y_subset, label=c, color=self.colors[idx])
+                plotWithNA(X_subset, Y_subset, ax, c, self.line(idx)[0])
         
         # Add the legend, remove duplicates. Since the plot is compsed piecewise,
         # there will be multiple instances of each line for the legend.

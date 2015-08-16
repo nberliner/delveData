@@ -56,7 +56,7 @@ def splitNA(x, y):
 
     idx = np.where( pd.notnull(y) )[0] # get the indexes with values
                                        # we are only interested in the
-                                       # first dimension
+                                       # first dimension.
     for i in range(1,len(idx)):
         chunksY = y[ idx[i-1]:idx[i]+1 ] # These are the chunks of data
                                          # that can be used to plot the data
@@ -69,6 +69,35 @@ def splitNA(x, y):
     
     return X_subset, Y_subset
         
+
+def plotWithNA(X_subset, Y_subset, ax, label, color, linestyle):
+    """
+    Add the divided entries in *_subset to ax.
+    
+    Data containing mising values will be plotted with dashed lines connecting
+    the points adjacent to the missing values. The data will be added directly
+    to the ax handle.
+    
+    Input:
+      X_subset (list):  List output from splitNA()
+      
+      Y_subset (list):  List output from splitNA()
+      
+      ax (ax object):   Axes to which the plot will be added to
+      
+      label (str):      Label for the plot legend
+      
+      color (str):      Linecolor to be used
+      
+    """
+    for x_subset, y_subset in zip(X_subset, Y_subset):
+        if np.any(pd.isnull(Y_subset)):
+            x_subset = x_subset[ pd.notnull(y_subset) ]
+            y_subset = y_subset.dropna()
+            ax.plot(x_subset.dropna(), y_subset.dropna(), label=label, color=color, linestyle="dotted", marker="o")
+        else:
+            ax.plot(x_subset, y_subset, label=label, color=color, linestyle=linestyle)
+    return ax
 
 
 class CountryContainer(object):
@@ -170,3 +199,18 @@ class Settings(object):
         self.axisLabelSize    = 16
         self.colors           = ['blue', 'green', 'red', 'cyan', 'magenta', \
                                  'black', ]
+        self.linestyle        = ["solid", "dashed"]
+    
+    def line(self, idx):
+        i = 0
+        while len(self.colors)-1 < idx:
+            i   += 1
+            idx -= len(self.colors)
+
+        assert( i <= len(self.linestyle) )
+        return self.colors[idx], self.linestyle[i]
+
+
+
+
+

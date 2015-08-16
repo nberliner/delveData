@@ -249,6 +249,10 @@ class UNHCRdata(Settings):
         return ax
 
     def _plot(self, ax, x, Y):
+        if len(x) == 0:
+            print("No data to plot")
+            return
+            
         count = 0 # This keeps track of "unused" colors
         for idx, y in enumerate(Y):
             # Split the data into subsets (if needed)
@@ -261,6 +265,7 @@ class UNHCRdata(Settings):
             
             # Plot the data
             plotWithNA(X_subset, Y_subset, ax, y.name, color, linetype)
+        return
 
     def _legend(self, ax):
         _handles, _labels = ax.get_legend_handles_labels()

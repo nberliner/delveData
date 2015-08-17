@@ -23,8 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 """
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+import zipfile
 
 #from countryCodeMapper import CountryCodeMapper
 #from utils import Settings, splitNA, plotWithNA
@@ -61,7 +60,10 @@ class OECDdata(Migration):
                  "Flag Codes"           : str   ,\
                  "Flags"                : str
                  }
-        data = pd.read_csv(fname, dtype=dtype)
+        
+        assert( zipfile.is_zipfile(fname) ) # sanity check
+        with zipfile.ZipFile(fname, "r") as f:
+            data = pd.read_csv(f.open(f.namelist()[0]), dtype=dtype)
 
         # The Flags columns only has two values, {'Break', 'Estimated value'}
         # I do not know what these mean and prefer to remove them for now.

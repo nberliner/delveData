@@ -18,4 +18,4 @@ vignettes/*.pdf
 .spyder*
 
 # Some data files
-MIG_15082015002909613.csv
+*MIG_15082015002909613.csv*

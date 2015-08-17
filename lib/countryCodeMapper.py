@@ -151,6 +151,7 @@ class CountryCodeMapper(object):
                               "COG":"COG"                           ,\
                                 "Congo":"COG"                       ,\
                                 "Dem. Rep. of the Congo":"COG"      ,\
+                                "Democratic Republic of the Congo":"COG",\
                                 "Congolese":"COG"                   ,\
                               "COL":"COL"                           ,\
                                 "Colombia":"COL"                    ,\
@@ -274,6 +275,7 @@ class CountryCodeMapper(object):
                               "HKG":"HKG"                           ,\
                                 "Hong Kong":"HKG"                   ,\
                                 "China, Hong Kong SAR":"HKG"        ,\
+                                "Hong Kong, China":"HKG"            ,\
                               "HND":"HND"                           ,\
                                 "Honduras":"HND"                    ,\
                                 "Honduran":"HND"                    ,\
@@ -347,6 +349,7 @@ class CountryCodeMapper(object):
                                 "Rep. of Korea":"KOR"               ,\
                                 "South Korea":"KOR"                 ,\
                                 "South Korean":"KOR"                ,\
+                                "Korea":"KOR"                       ,\
                               "KWT":"KWT"                           ,\
                                 "Kuwait":"KWT"                      ,\
                                 "Kuwaiti":"KWT"                     ,\
@@ -509,6 +512,7 @@ class CountryCodeMapper(object):
                                 "Puerto Ricans":"PRI"               ,\
                               "PRK":"PRK"                           ,\
                                 "North Korea":"PRK"                 ,\
+                                "Democratic People's Republic of Korea":"PRK",\
                                 "Dem. People's Rep. of Korea":"PRK" ,\
                                 "North Koreans":"PRK"               ,\
                               "PRT":"PRT"                           ,\

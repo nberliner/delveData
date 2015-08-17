@@ -24,7 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 """
 import pandas as pd
 import numpy as np
-#import matplotlib.pyplot as plt
 
 from migrationData import Migration
 
@@ -34,9 +33,6 @@ class UNHCRdata(Migration):
     
     def __init__(self, fname):
         super(UNHCRdata, self).__init__(fname)
-
-#        self.fname = fname
-#        self.mapper = CountryCodeMapper()
 
         self.destination_ID = "Country / territory of asylum/residence"
         self.origin_ID      = "Origin"
@@ -111,122 +107,9 @@ class UNHCRdata(Migration):
         return data
 
 
-
-#    def show(self, destination_country=None, origin_country=None, year=None):
-#        """
-#        Plot summaries of the UNHCR data
-#        """
-#        # Check if input is given
-#        if (destination_country is not None or origin_country is not None) and year is not None:
-#            print("You can either specify the countries or the year. Not both.")
-#            return
-#        elif destination_country is None and origin_country is None and year is None:
-#            print("You must either specify the countries or the year.")
-#            return
-#        
-#        # Convert the country to three letter country code
-#        if destination_country is not None and self.mapper(destination_country):
-#            destination_country = self.mapper(destination_country)
-#        elif destination_country is None:
-#            pass
-#        else:
-#            print("Destination country not understood.")
-#            return
-#        if origin_country is not None and self.mapper(origin_country):
-#            origin_country = self.mapper(origin_country)
-#        elif origin_country is None:
-#            pass
-#        else:
-#            print("Origin country not understood.")
-#            return
-#        
-#        # Plot the requested type
-#        if destination_country is not None or origin_country is not None:
-#            self._showCountry(destination_country, origin_country)
-#        else:
-#            self._showYear(year)
-    
-    
-#    def _showCountry(self, destination_country, origin_country):
-#        # Get the data
-#        if destination_country is not None and origin_country is not None:
-#            self._showCountryDirect(destination_country, origin_country)
-#        elif origin_country is None:
-#            self._showCountryByDestination(destination_country)
-#        elif destination_country is None:
-#            self._showCountryByOrigin(origin_country)
-            
-#    def _showCountryByDestination(self, destination_country, groupby=None):
-#        # Show the accumulated situation for country by destination
-#        tmpData = self._group("Country / territory of asylum/residence", destination_country)
-#        
-#        # Get the individual data
-#        x, Y = self._extract(tmpData)
-#        
-#        # Create the figure
-#        xlimit = [int(min(x))-1, int(max(x))+1]
-#        ax = self._figure("everywhere", destination_country, xlimit)
-#        
-#        # Now we need to split the data and add it to the axes
-#        self._plot(ax, x, Y)
-#        
-#        # Add the legend, remove duplicates. Since the plot is compsed piecewise,
-#        # there will be multiple instances of each line for the legend.
-#        self._legend(ax)
-#        return
-        
-
-#    def _showCountryByOrigin(self, origin_country, groupby=None):
-#        # Show the accumulated situation for country by origin
-#        tmpData = self._group("Origin", origin_country)
-#        
-#        # Get the individual data
-#        x, Y = self._extract(tmpData)
-#        
-#        # Create the figure
-#        xlimit = [int(min(x))-1, int(max(x))+1]
-#        ax = self._figure(origin_country, "everywhere", xlimit)
-#        
-#        # Now we need to split the data and add it to the axes
-#        self._plot(ax, x, Y)
-#        
-#        # Add the legend, remove duplicates. Since the plot is composed piecewise,
-#        # there will be multiple instances of each line for the legend.
-#        self._legend(ax)
-#        return
-    
-    
-#    def _showCountryDirect(self, destination_country, origin_country):
-#        # Get the numbers for the rates between these two countries
-#        tmpData = self.data[ self.data["Country / territory of asylum/residence"] == destination_country ] 
-#        tmpData = tmpData[ tmpData["Origin"] == origin_country ]
-#        
-#        # Get the individual data
-#        x, Y = self._extract(tmpData)
-#        
-#        # Create the figure
-#        xlimit = [int(min(x))-1, int(max(x))+1]
-#        ax = self._figure(origin_country, destination_country, xlimit)
-#        
-#        # Now we need to split the data and add it to the axes
-#        self._plot(ax, x, Y)
-#        
-#        # Add the legend, remove duplicates. Since the plot is compsed piecewise,
-#        # there will be multiple instances of each line for the legend.
-#        self._legend(ax)
-        
-        
-    
     def _showYear(self, year):
         pass
 
-#    def _group(self, column, country):
-#        tmpData = self.data[ self.data[column] == country ]
-#        del tmpData["Country / territory of asylum/residence"]
-#        del tmpData["Origin"]
-#        tmpData = tmpData.groupby(["Year"], sort=True).agg([np.sum]).reset_index()
-#        tmpData.columns = tmpData.columns.droplevel(1)
-#        return tmpData
 
     def _extract(self, dataFrame):
         x  = dataFrame["Year"]
@@ -241,36 +124,3 @@ class UNHCRdata(Migration):
         
         return x, (y1, y2, y3, y4, y5, y6, y7, y8)
         
-#    def _figure(self, origin_country, destination_country, xlimit):
-#        fig = plt.figure(figsize=self.singleFigureSize, dpi=self.dpi)
-#        ax  = fig.add_subplot(111)
-#        ax.set_title("Refugess from %s in %s" %(origin_country, destination_country), y=1.04)
-#        ax.set_xlabel("Year", fontsize=self.axisLabelSize)
-#        ax.set_ylabel("Indicator", fontsize=self.axisLabelSize)
-#        ax.set_xlim( xlimit )
-#        return ax
-
-#    def _plot(self, ax, x, Y):
-#        if len(x) == 0:
-#            print("No data to plot")
-#            return
-#            
-#        count = 0 # This keeps track of "unused" colors
-#        for idx, y in enumerate(Y):
-#            # Split the data into subsets (if needed)
-#            X_subset, Y_subset = splitNA(x, y)
-#          
-#            # Get the color and linestyle
-#            if len(Y_subset) == 0: # nothing to plot
-#                count += 1
-#            color, linetype = self.line(idx-count)
-#            
-#            # Plot the data
-#            plotWithNA(X_subset, Y_subset, ax, y.name, color, linetype)
-#        return
-#
-#    def _legend(self, ax):
-#        _handles, _labels = ax.get_legend_handles_labels()
-#        labels  = list(set(_labels))
-#        handles = [ _handles[_labels.index(item)] for item in labels ]
-#        ax.legend(handles, labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)

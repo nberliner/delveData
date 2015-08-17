@@ -16,3 +16,6 @@ vignettes/*.pdf
 *.pyc
 *__pycache__*
 .spyder*
+
+# Some data files
+MIG_15082015002909613.csv

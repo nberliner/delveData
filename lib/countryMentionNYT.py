@@ -99,7 +99,7 @@ pickle.dump(container, open(tmpFolder + "country_aggregate.p", "wb"))
 # Save everything to a csv file. The columns will be the countries, the rows
 # will be the years. One column contains the years (sanity check to ensure
 # that the row order is not messed up).
-container.save(tmpFolder + "/nyt_scrape.csv")
+container.save(tmpFolder + "/NYT_scrape.csv")
 
 
 

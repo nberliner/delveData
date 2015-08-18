@@ -37,10 +37,10 @@ from countryCodeMapper import CountryCodeMapper
 from utils             import Country, CountryContainer
 
 from nytimesarticles   import articleAPI, DeveloperOverRate
-api = articleAPI('/* Your API key here */')
+api = articleAPI('***REMOVED***')
 
 # Use tmp folder to keep intermediate results. Final output will be placed there as well
-tmpFolder = "/home/niklas/tmp/nyt_scrape/"
+tmpFolder = "../data/newspaper/raw/"
 
 ## Read the temporary folder content
 done = [ int(fname[8:-2]) for fname in os.listdir(tmpFolder) if fname != "country_aggregate.p" ]
@@ -85,8 +85,11 @@ for date in dates:
             if not success:
                 print("Error in %s, %s" %(date, country))
         
-        # Store the year in case something breaks during the run
+        # Store the year as pickle in case something breaks during the run
         pickle.dump(a, open(tmpFolder + "country_%s.p" %str(date), "wb"))
+        
+        # Save the original data as csv file
+        a.save(tmpFolder + "country_%s.csv" %str(date))
     
     # Add the country to the container
     container(a)

@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 """
+import csv
 import numpy as np
 import pandas as pd
 import matplotlib as mpl
@@ -112,7 +113,7 @@ class CountryContainer(object):
     def __call__(self, country):
         self.data.append( (country, country.year) )
     
-    def save(self, fname):
+    def save(self, fname, count="max"):
         """
         Save the country mentions to disk (comma separated).
         
@@ -124,10 +125,17 @@ class CountryContainer(object):
         self.data = sorted(self.data, key=itemgetter(1))
         
         # Construct a dict of the countries and years
-        dataFrame = pd.DataFrame.from_dict( [ country.averageCount() for country, _ in self.data ], )
-
+        if count == "avg":
+            dataFrame = pd.DataFrame.from_dict( [ country.averageCount() for country, _ in self.data ], )
+        elif count == "max":
+            dataFrame = pd.DataFrame.from_dict( [ country.maxCount() for country, _ in self.data ], )
+        else:
+            print("Sorry, it was not understood which accumulation (count) should be done")
+            return
+            
         # Save to disk
         dataFrame.to_csv(fname)
+        return
         
 
 class Country(object):
@@ -138,9 +146,11 @@ class Country(object):
     def __init__(self, year=None):
         
         self.mapper       = CountryCodeMapper()
-        self.countryCount = dict()
+        self.data         = dict()
+        self.countryCount = None
         self.counter      = dict()
         self.block        = False
+        self.maximum      = False
         self.year         = year
         
     
@@ -153,19 +163,45 @@ class Country(object):
             print("The counter is blocked. If you know what you are doing,\n" + \
                   "use force=True to add regardless.")
             return
-            
-        # Add the article count
-        country = self.mapper(country)
-        if country:
-            if country in self.countryCount:
-                self.countryCount[country] += count
+        
+        assert( country not in self.data )
+        self.data[country] = count
+        return
+    
+    def aggregate(self, maximum=True):
+        """
+        Convert the article count of each search query into one aggregate count.
+        
+        Possible options are to take the maximal returned value (default) or
+        to take the average of the returned values for each country.
+        
+        Input:
+          maximum (bool):  Take the maximum or the average
+          
+        """
+        self.countryCount = dict()
+        for country, count in self.data.items():
+            # Add the article count
+            country = self.mapper(country)
+            if country: # was the country understood
+                if maximum: # should only the max count be calculated
+                    self.maximum = True
+                    if country in self.countryCount:
+                        if count > self.countryCount[country]:
+                            self.countryCount[country]  = count
+                    else:
+                        self.countryCount[country]  = count
+                else: # no, just add everything up
+                    if country in self.countryCount:
+                        self.countryCount[country] += count
+                    else:
+                        self.countryCount[country]  = count
+                
+                # Keep track of how many times we added to take the average
+                self.counter.setdefault(self.mapper(country), list()).append(1)
             else:
-                self.countryCount[country]  = count
-            
-            # Keep track of how many times we added to take the average
-            self.counter.setdefault(self.mapper(country), list()).append(1)
-        else:
-            print("Country name %s not recognised!" %country)
+                print("Country name %s not recognised!" %country)
+        return
 
     def averageCount(self):
         """
@@ -174,6 +210,10 @@ class Country(object):
         from each query is returned.
         """
         self.block = True # block adding new values
+        
+        if self.countryCount is None:
+            self.aggregate(maximum=False)
+        
         for country, N in self.counter.items():
             self.countryCount[country] /= len(N)
         
@@ -181,6 +221,34 @@ class Country(object):
         self.countryCount["YEAR"] = self.year
         
         return self.countryCount
+    
+    def maxCount(self):
+        """
+        Calculate the maximum count for each country. I.e. only one country
+        is taken as representative and relevant. This will most likely be a
+        good choice if countries have one commonly used name but multiple
+        "official" names.
+        """
+        self.block = True # block adding new values
+        
+        if self.countryCount is None:
+            self.aggregate(maximum=True)
+
+        # The count must already be specified as maximum
+        assert( self.maximum )
+        
+        # Add a year column (needed for saving to csv)
+        self.countryCount["YEAR"] = self.year
+        
+        return self.countryCount
+    
+    def save(self, fname):
+        # credit goes here: http://stackoverflow.com/a/10373268
+        with open(fname, 'w') as f:
+            w = csv.DictWriter(f, self.data.keys())
+            w.writeheader()
+            w.writerow(self.data)
+        return
         
 
 class Settings(object):

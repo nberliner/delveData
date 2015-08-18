@@ -57,6 +57,11 @@ class NewspaperData(Settings):
         # Melt the dataframe to to make it compatible with the other data
         data = pd.melt(data, id_vars=["YEAR"], var_name="Country", value_name=("Mentions_%s" %name) )
         
+        # Rename the column "YEAR" to "Year"
+        index = ["Year"]
+        index.extend(data.columns[1:])
+        data.columns = index
+        
         return data
 
     

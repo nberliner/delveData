@@ -34,7 +34,7 @@ class UNHCRdata(Migration):
     def __init__(self, fname):
         super(UNHCRdata, self).__init__(fname)
 
-        self.destination_ID = "Country / territory of asylum/residence"
+        self.destination_ID = "Country"
         self.origin_ID      = "Origin"
         
         self.data = self._loadData(fname)
@@ -75,15 +75,19 @@ class UNHCRdata(Migration):
         data["Others of concern"]                        = data["Others of concern"].astype(float)
         data["Total Population"]                         = data["Total Population"].astype(float)
 
+        # Set the column names; rename "Country / territory of asylum/residence" to "Country"
+        index = ["Year","Country"]
+        index.extend(data.columns[2:])
+        data.columns = index
 
         # The data contains countries that are not present in country mapper
         # or are not specified. We will subsume them as "Various/Unknown"
         
         # First we will take all destination countries that are not recognised
         # and create a single new entry for them.
-        idx = self.mapper.convert( data["Country / territory of asylum/residence"] )
+        idx = self.mapper.convert( data["Country"] )
         idx = np.where( idx=="False" )[0] # I do not know why I have to compare it to the string "False"
-        data.iloc[idx,1] = "Various/Unknown" # this overwrites the "Country / territory of asylum/residence"
+        data.iloc[idx,1] = "Various/Unknown" # this overwrites the "Country"
                                              # columns of all rows with non understood countries.
 
         # In the next step we can group by the destination country and combine
@@ -93,7 +97,7 @@ class UNHCRdata(Migration):
         idx = np.where( idx=="False" )[0]
         data.iloc[idx,2] = "Various/Unknown"
         # Now group by destination and origin country and create aggregates
-        data = data.groupby(["Year","Country / territory of asylum/residence", "Origin"]).agg([np.sum]).reset_index()
+        data = data.groupby(["Year","Country", "Origin"]).agg([np.sum]).reset_index()
         data.reset_index()
         data.columns = data.columns.droplevel(1) # The columns names are multiindexes
                                                  # containing the information about the
@@ -102,8 +106,8 @@ class UNHCRdata(Migration):
                                                  # See: http://stackoverflow.com/a/22233719
         
         # Convert the country columns into the three letter country code
-        data["Country / territory of asylum/residence"] = self.mapper.convert( data["Country / territory of asylum/residence"] )
-        data["Origin"]                                  = self.mapper.convert( data["Origin"] )
+        data["Country"] = self.mapper.convert( data["Country"] )
+        data["Origin"]  = self.mapper.convert( data["Origin"] )
         return data
 
 

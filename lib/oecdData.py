@@ -39,7 +39,7 @@ class OECDdata(Migration):
 #        self.mapper = CountryCodeMapper()
 
         self.destination_ID = "Country"
-        self.origin_ID      = "Country of origin"
+        self.origin_ID      = ""
         
         self.data = self._loadData(fname)
 
@@ -80,8 +80,10 @@ class OECDdata(Migration):
         data.reset_index(inplace=True)
         
         # Convert the country columns into the three letter country code
-        data["Country"]           = self.mapper.convert( data["Country"] )
-        data["Country of origin"] = self.mapper.convert( data["Country of origin"] )
+        # and rename column "Country of origin" to "Origin"
+        data["Country"] = self.mapper.convert( data["Country"] )
+        data["Origin"]  = self.mapper.convert( data["Country of origin"] )
+        del data["Country of origin"]
         
         return data
 

@@ -274,6 +274,15 @@ class WorldBankData(Settings):
                 else:
                     self.data = pd.merge(self.data, dataFrame, on=["Country Code","Year"], how="outer")
         
+        # Rename the column "Country Code" to "Country"
+        index = ["Country"]
+        index.extend(self.data.columns[1:])
+        self.data.columns = index
+        
+        # Convert the "Year" column to numeric
+        self.data = self.data.convert_objects(convert_numeric=True)
+        return
+        
 
     def _reshape(self, dataFrame):
         """ Reshape the original World Bank .csv file table. """
@@ -340,8 +349,8 @@ class WorldBankData(Settings):
         x, y, c = list(), list(), list()
         for country in countryList:
             try:
-                x.append(self.data["Year"][ self.data["Country Code"] == country ])
-                y.append(self.data[name][   self.data["Country Code"] == country ])
+                x.append(self.data["Year"][ self.data["Country"] == country ])
+                y.append(self.data[name][   self.data["Country"] == country ])
                 c.append(country)
             except:
                 x.append(np.asarray([]))

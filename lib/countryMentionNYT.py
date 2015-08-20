@@ -37,7 +37,7 @@ from countryCodeMapper import CountryCodeMapper
 from utils             import Country, CountryContainer
 
 from nytimesarticles   import articleAPI, DeveloperOverRate
-api = articleAPI('***REMOVED***')
+api = articleAPI('/* Your API access key here */')
 
 # Use tmp folder to keep intermediate results. Final output will be placed there as well
 tmpFolder = "../data/newspaper/raw/"

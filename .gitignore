@@ -17,5 +17,8 @@ vignettes/*.pdf
 *__pycache__*
 .spyder*
 
+# IPython Notebook files
+.ipynb*
+
 # Some data files
 *MIG_15082015002909613.csv*

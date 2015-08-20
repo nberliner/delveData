@@ -29,20 +29,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from countryCodeMapper import CountryCodeMapper
-from utils import Settings, splitNA, plotWithNA
+from utils import Settings, DoubleDict, splitNA, plotWithNA
 
-class DoubleDict(dict):
-    """
-    Dictionary class that allows easy adding of pairs of values. Each value
-    will become key and value respectively. This allows easy mapping one to
-    the other, i.e. conversion.
-    """
-    def __init__(self, *args):
-        super(DoubleDict, self).__init__(args)
-
-    def __setitem__(self, key, val):
-        dict.__setitem__(self, key, val)
-        dict.__setitem__(self, val, key)
 
 
 class WorldBankIndicatorMapper(object):

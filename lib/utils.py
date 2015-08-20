@@ -101,6 +101,20 @@ def plotWithNA(X_subset, Y_subset, ax, label, color, linestyle):
     return ax
 
 
+class DoubleDict(dict):
+    """
+    Dictionary class that allows easy adding of pairs of values. Each value
+    will become key and value respectively. This allows easy mapping one to
+    the other, i.e. conversion.
+    """
+    def __init__(self, *args):
+        super(DoubleDict, self).__init__(args)
+
+    def __setitem__(self, key, val):
+        dict.__setitem__(self, key, val)
+        dict.__setitem__(self, val, key)
+        
+        
 class CountryContainer(object):
     """
     Container object for Country() objects. Used to sort and save the data

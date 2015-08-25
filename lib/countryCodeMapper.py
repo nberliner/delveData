@@ -150,6 +150,7 @@ class CountryCodeMapper(object):
                                 "Cameroonian":"CMR"                 ,\
                               "COG":"COG"                           ,\
                                 "Congo":"COG"                       ,\
+                                "Congo D.R.":"COG"                  ,\
                                 "Dem. Rep. of the Congo":"COG"      ,\
                                 "Democratic Republic of the Congo":"COG",\
                                 "Congolese":"COG"                   ,\
@@ -667,6 +668,7 @@ class CountryCodeMapper(object):
                                 "Venezuelan":"VEN"                  ,\
                               "VIR":"VIR"                           ,\
                                 "Virgin Islands (U.S.)":"VIR"       ,\
+                                "U.S. Virgin Islands":"VIR"         ,\
                                 "US Virgin Islands":"VIR"           ,\
                                 "Virgin Islands":"VIR"              ,\
                               "VNM":"VNM"                           ,\

@@ -39,7 +39,7 @@ class OECDdata(Migration):
 #        self.mapper = CountryCodeMapper()
 
         self.destination_ID = "Country"
-        self.origin_ID      = ""
+        self.origin_ID      = "Origin"
         
         self.data = self._loadData(fname)
 

@@ -276,7 +276,7 @@ class Settings(object):
 
         mpl.rc('font', **font)
         
-        self.singleFigureSize = (10,8)
+        self.singleFigureSize = (8,6)
         self.dpi              = 120
         self.axisLabelSize    = 16
         self.colors           = ['blue', 'green', 'red', 'cyan', 'magenta', \

@@ -29,6 +29,7 @@ from WorldBankData import WorldBankData
 from unhcrData     import UNHCRdata
 from oecdData      import OECDdata
 from newspaperData import NewspaperData
+from climateData   import WeatherData
 
 from utils import Settings, DoubleDict
 
@@ -54,8 +55,10 @@ class DataContainer(Settings):
         self.fname_UNHCR     = folder + "/data/unhcr/unhcr_popstats_export_persons_of_concern_all_data.csv"
         self.fname_OECD      = folder + "/data/oecd/MIG_15082015002909613.csv.zip"
         self.fname_newspaper = folder + "/data/newspaper/NYT_scrape.csv"
-
-        self.data = self._loadData()
+        self.fname_climate   = folder + "/data/climate/"
+        
+        self.data          = self._loadData()
+        self.dataCollapsed = self.collapse()
 
 
     def _loadData(self):
@@ -63,6 +66,11 @@ class DataContainer(Settings):
         self.worldBank = WorldBankData(self.fname_worldBank)
         self.UNHCR     = UNHCRdata(self.fname_UNHCR)
         self.OECD      = OECDdata(self.fname_OECD)
+        self.climate   = WeatherData(fname=self.fname_climate+"ghcnd_gsn.csv"           ,\
+                                     years=[1980,2015]                                     ,\
+                                     stationList=self.fname_climate+"ghcnd-stations.txt"   ,\
+                                     LatLon2Counry=self.fname_climate+"LatLon2Country.csv" ,\
+                                     )
         
         self.newspaper = NewspaperData()
         self.newspaper.add(self.fname_newspaper)
@@ -72,6 +80,7 @@ class DataContainer(Settings):
         data = pd.merge(self.OECD.data, self.UNHCR.data, on=["Year","Country","Origin"], how="outer")
         data = pd.merge(data, self.worldBank.data,       on=["Year","Country"], how="outer")
         data = pd.merge(data, self.newspaper.data,       on=["Year","Country"], how="outer")
+        data = pd.merge(data, self.climate.data,         on=["Year","Country"], how="outer")
 
         return data
 
@@ -260,7 +269,12 @@ class DataContainer(Settings):
                                                              'IC.FRM.CORR.ZS'                                             : np.mean ,\
                                                              'AG.LND.AGRI.ZS'                                             : np.mean ,\
                                                              'SE.PRM.UNER.FE'                                             : np.mean ,\
-                                                             'Mentions_NYT'                                               : np.sum
+                                                             'Mentions_NYT'                                               : np.mean ,\
+                                                             'PRCP'                                                       : np.mean ,\
+                                                             'SNOW'                                                       : np.mean ,\
+                                                             'SNWD'                                                       : np.mean ,\
+                                                             'TMAX'                                                       : np.mean ,\
+                                                             'TMIN'                                                       : np.mean
                                                             })
 
         tmpData.reset_index(inplace=True)

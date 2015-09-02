@@ -59,11 +59,14 @@ class WeatherData(object):
         # can be read in.
         startTime = datetime.now() # set the calculation start time
         
-        if os.path.isfile("../data/climate/ghcnd_gsn.csv"):
+        if os.path.isfile("../data/climate/ghcnd_gsn.csv") or fname[-4:] == ".csv":
             print("Loading the data from prebuild source..")
             if optimiseFactor:
                 print("Not rebuilding the data. Cannot give you the full DataFrame.")
-            self.data = pd.DataFrame.from_csv("../data/climate/ghcnd_gsn.csv")
+            if fname[-4:] == ".csv":
+                self.data = pd.DataFrame.from_csv(fname)
+            else:
+                self.data = pd.DataFrame.from_csv("../data/climate/ghcnd_gsn.csv")
             self.data.reset_index(inplace=True)
         else:
             print("Generating the data from the original data..")
